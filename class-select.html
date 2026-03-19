@@ -20,13 +20,13 @@
                 <input type="text" id="roomIdInput" placeholder="Nhập mã phòng..." class="room-input">
                 <div class="room-btns">
                     <button class="room-btn create" onclick="createRoom()">Tạo Phòng</button>
-                    <button class="room-btn join" onclick="joinRoom()">Vào Phòng</button>
+                    <button class="room-btn join" onclick="goToRoom()">Vào Phòng</button>
                 </div>
                 <p id="roomStatus" class="room-status"></p>
             </div>
         </div>
 
-        <div class="class-selection">
+        <div id="classSelectionSection" class="class-selection">
             <div class="class-card magic" onclick="selectClass('magic')">
                 <div class="class-icon">✨</div>
                 <h2>Phép Thuật</h2>
@@ -76,33 +76,48 @@
         const roomIdInput = document.getElementById('roomIdInput');
 
         if (gameMode && gameMode.startsWith('online')) {
-            roomSection.classList.remove('hidden');
+            const hasJoinedRoom = document.referrer.includes('room.html');
+            
+            if (hasJoinedRoom) {
+                // Nếu quay lại từ trang Phòng, hiện chọn class
+                roomSection.classList.add('hidden');
+                document.getElementById('classSelectionSection').classList.remove('hidden');
+                document.querySelector('.header-section h1').textContent = "Chọn Hệ Của Bạn";
+            } else {
+                // Nếu từ index qua, bắt nhập phòng trước
+                roomSection.classList.remove('hidden');
+                document.getElementById('classSelectionSection').classList.add('hidden');
+                document.querySelector('.header-section h1').textContent = "Thiết Lập Phòng";
+            }
         }
 
         function createRoom() {
             const id = Math.random().toString(36).substr(2, 6).toUpperCase();
             roomIdInput.value = id;
-            statusEl.textContent = "Đã tạo mã phòng: " + id + ". Hãy gửi cho bạn bè!";
+            statusEl.textContent = "Mã phòng mới: " + id + ". Nhấn 'Vào Phòng' để tiếp tục!";
             localStorage.setItem('onlineRoomId', id);
             localStorage.setItem('isHost', 'true');
         }
 
-        function joinRoom() {
+        function goToRoom() {
             const id = roomIdInput.value.trim().toUpperCase();
             if (id.length < 4) {
-                statusEl.textContent = "Mã phòng không hợp lệ!";
+                statusEl.textContent = "Vui lòng nhập mã phòng hợp lệ!";
                 return;
             }
+            
+            // Nếu người dùng tự nhập mã (không qua nút Tạo Phòng), thì họ là Khách
+            if (localStorage.getItem('onlineRoomId') !== id) {
+                localStorage.setItem('isHost', 'false');
+            }
+            
             localStorage.setItem('onlineRoomId', id);
-            localStorage.setItem('isHost', 'false');
-            statusEl.textContent = "Đã nhận mã phòng. Hãy chọn hệ để bắt đầu!";
+            console.log("Đang chuyển hướng sang room.html...");
+            window.location.href = 'room.html';
         }
 
+        // Xóa bỏ hàm joinRoom() cũ không dùng tới để tránh nhầm lẫn
         function selectClass(classType) {
-            if (gameMode && gameMode.startsWith('online') && !localStorage.getItem('onlineRoomId')) {
-                statusEl.textContent = "Vui lòng tạo hoặc nhập mã phòng trước!";
-                return;
-            }
             localStorage.setItem('playerClass', classType);
             window.location.href = 'game.html';
         }
