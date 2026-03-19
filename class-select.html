@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>Chọn Hệ</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header-section">
+            <h1>Chọn Hệ Của Bạn</h1>
+            <p class="subtitle">Mỗi hệ có những kỹ năng và sức mạnh riêng biệt</p>
+        </div>
+
+        <div id="online-room-section" class="room-section hidden">
+            <div class="room-controls">
+                <input type="text" id="roomIdInput" placeholder="Nhập mã phòng..." class="room-input">
+                <div class="room-btns">
+                    <button class="room-btn create" onclick="createRoom()">Tạo Phòng</button>
+                    <button class="room-btn join" onclick="joinRoom()">Vào Phòng</button>
+                </div>
+                <p id="roomStatus" class="room-status"></p>
+            </div>
+        </div>
+
+        <div class="class-selection">
+            <div class="class-card magic" onclick="selectClass('magic')">
+                <div class="class-icon">✨</div>
+                <h2>Phép Thuật</h2>
+                <div class="stats">
+                    <span>HP: 200</span>
+                    <span>Tầm: 8m</span>
+                </div>
+                <div class="skills">
+                    <small><span class="skill-name">Cầu Băng:</span> Làm chậm + 15 dmg</small>
+                    <small><span class="skill-name">Vòng Tròn:</span> 15 dmg/s diện rộng</small>
+                    <small><span class="skill-name">Bão Tuyết:</span> 100 dmg + hồi 50 HP</small>
+                </div>
+            </div>
+            <div class="class-card physical" onclick="selectClass('physical')">
+                <div class="class-icon">⚔️</div>
+                <h2>Vật Lý</h2>
+                <div class="stats">
+                    <span>HP: 300</span>
+                    <span>Tầm: 5m</span>
+                </div>
+                <div class="skills">
+                    <small><span class="skill-name">Đột Kích:</span> Choáng 2s + 30 dmg</small>
+                    <small><span class="skill-name">Lao Tới:</span> Di chuyển 6m</small>
+                    <small><span class="skill-name">Đại Đao:</span> 100 dmg + hồi 50 HP</small>
+                </div>
+            </div>
+            <div class="class-card tank" onclick="selectClass('tank')">
+                <div class="class-icon">🛡️</div>
+                <h2>Đỡ Đòn</h2>
+                <div class="stats">
+                    <span>HP: 500</span>
+                    <span>Tầm: 5m</span>
+                </div>
+                <div class="skills">
+                    <small><span class="skill-name">Khiên Chấn:</span> Choáng 4s + 10 dmg</small>
+                    <small><span class="skill-name">Lao Kích:</span> Di chuyển 3m</small>
+                    <small><span class="skill-name">Vạn Cổ:</span> 100 dmg + hồi 50 HP</small>
+                </div>
+            </div>
+        </div>
+        <button class="back-btn" onclick="history.back()">Quay Lại</button>
+    </div>
+    <script>
+        const gameMode = localStorage.getItem('gameMode');
+        const roomSection = document.getElementById('online-room-section');
+        const statusEl = document.getElementById('roomStatus');
+        const roomIdInput = document.getElementById('roomIdInput');
+
+        if (gameMode && gameMode.startsWith('online')) {
+            roomSection.classList.remove('hidden');
+        }
+
+        function createRoom() {
+            const id = Math.random().toString(36).substr(2, 6).toUpperCase();
+            roomIdInput.value = id;
+            statusEl.textContent = "Đã tạo mã phòng: " + id + ". Hãy gửi cho bạn bè!";
+            localStorage.setItem('onlineRoomId', id);
+            localStorage.setItem('isHost', 'true');
+        }
+
+        function joinRoom() {
+            const id = roomIdInput.value.trim().toUpperCase();
+            if (id.length < 4) {
+                statusEl.textContent = "Mã phòng không hợp lệ!";
+                return;
+            }
+            localStorage.setItem('onlineRoomId', id);
+            localStorage.setItem('isHost', 'false');
+            statusEl.textContent = "Đã nhận mã phòng. Hãy chọn hệ để bắt đầu!";
+        }
+
+        function selectClass(classType) {
+            if (gameMode && gameMode.startsWith('online') && !localStorage.getItem('onlineRoomId')) {
+                statusEl.textContent = "Vui lòng tạo hoặc nhập mã phòng trước!";
+                return;
+            }
+            localStorage.setItem('playerClass', classType);
+            window.location.href = 'game.html';
+        }
+    </script>
+</body>
+</html>

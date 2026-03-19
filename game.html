@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>Game</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
+</head>
+<body>
+    <div class="game-container">
+        <div class="game-info">
+            <div class="player-info">
+                <h3>Bạn (<span id="playerClass"></span>)</h3>
+                <div class="hp-bar">
+                    <div id="playerHp" class="hp-fill"></div>
+                </div>
+                <span id="playerHpText">HP: 0/0</span>
+            </div>
+            <div class="enemy-info">
+                <h3>Đối Thủ (<span id="enemyClass"></span>)</h3>
+                <div class="hp-bar">
+                    <div id="enemyHp" class="hp-fill"></div>
+                </div>
+                <span id="enemyHpText">HP: 0/0</span>
+            </div>
+        </div>
+        
+        <canvas id="gameCanvas" width="800" height="600"></canvas>
+        
+        <div class="movement-controls">
+            <div class="move-row">
+                <button class="move-btn" id="moveUp">↑</button>
+            </div>
+            <div class="move-row">
+                <button class="move-btn" id="moveLeft">←</button>
+                <button class="move-btn" id="moveDown">↓</button>
+                <button class="move-btn" id="moveRight">→</button>
+            </div>
+        </div>
+        
+        <div class="joystick-container">
+            <div class="joystick" id="joystick"></div>
+        </div>
+        
+        <div class="controls">
+            <button id="normalAttack" class="skill-btn">
+                <span class="skill-key">Q</span>
+                <span class="skill-label">Đánh Thường</span>
+            </button>
+            <button id="skill1" class="skill-btn">
+                <span class="skill-key">W</span>
+                <span class="skill-label">Kỹ Năng 1</span>
+            </button>
+            <button id="skill2" class="skill-btn">
+                <span class="skill-key">E</span>
+                <span class="skill-label">Kỹ Năng 2</span>
+            </button>
+            <button id="skill3" class="skill-btn">
+                <span class="skill-key">R</span>
+                <span class="skill-label">Tuyệt Kỹ</span>
+            </button>
+        </div>
+        
+        <div id="gameOver" class="game-over hidden">
+            <h2 id="gameResult"></h2>
+            <button onclick="location.href='index.html'">Chơi Lại</button>
+        </div>
+    </div>
+    
+    <script src="js/config.js"></script>
+    <script src="js/game.js"></script>
+    <script src="js/online.js"></script>
+</body>
+</html>

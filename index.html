@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>Trò Chơi Chiến Đấu</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header-section">
+            <h1>Chiến Binh Huyền Thoại</h1>
+            <p class="subtitle">Trải nghiệm những trận đấu kịch tính và kỹ năng đỉnh cao</p>
+        </div>
+        <div class="menu">
+            <button class="menu-btn primary-btn" onclick="selectMode('ai')">
+                <span class="btn-icon">🎮</span> Chơi với Máy
+            </button>
+            <button class="menu-btn secondary-btn" onclick="selectMode('online')">
+                <span class="btn-icon">🌐</span> Chơi Online 1vs1
+            </button>
+            <button class="menu-btn accent-btn" onclick="selectMode('online-2vs2')">
+                <span class="btn-icon">⚔️</span> Solo 2vs2 (Tạo Phòng)
+            </button>
+        </div>
+    </div>
+    <script>
+        function selectMode(mode) {
+            localStorage.setItem('gameMode', mode);
+            window.location.href = 'class-select.html';
+        }
+    </script>
+</body>
+</html>
